@@ -1,0 +1,80 @@
+# Maven
+######################
+*.a
+/TODO
+
+######################
+# Intellij
+######################
+.settings/
+.idea/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+
+######################
+# Eclipse
+######################
+*.pydevproject
+.project
+.metadata
+.springBeans
+tmp/
+tmp/**/*
+tmpFiles
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.factorypath
+/src/main/resources/rebel.xml
+
+######################
+# Visual Studio Code
+######################
+.vscode/
+
+######################
+log/
+target/
+
+######################
+# Package Files
+######################
+*.jar
+*.war
+*.ear
+*.db
+
+######################
+# Windows
+######################
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+######################
+# ESLint
+######################
+.eslintcache
+
+######################
+# SonarQube
+.scannerwork/
+!/cmd/sonar-scanner/lib/sonar-scanner-cli.jar
+######################
+
+######################
+# Ansible
+######################
+*.retry
+
+testDataDump.sql
