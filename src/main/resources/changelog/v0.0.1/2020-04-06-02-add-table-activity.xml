@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2020-04-06-02-add-table-activity" author="ZotovES" context="production">
+        <createTable tableName="activity" remarks="Активности пользователей">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="profile_uuid" type="uuid" remarks="Идентификатор профиля пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activity_date" type="timestamp with time zone" remarks="Дата активности"/>
+            <column name="activity" type="integer" remarks="Значение активности"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="activity" baseColumnNames="profile_uuid" baseTableSchemaName="carx"
+                                 constraintName="fk_activity_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="uuid"
+                                 referencedTableSchemaName="carx"
+                                 onDelete="CASCADE"/>
+
+        <createIndex tableName="activity" indexName="activity_profile_uuid_indx" schemaName="carx">
+            <column name="profile_uuid" type="uuid"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

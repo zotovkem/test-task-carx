@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2020-04-06-01-add-table-profile" author="ZotovES" context="production">
+        <createTable tableName="profile" remarks="Профиль пользователя" schemaName="carx">
+            <column name="uuid" type="uuid" autoIncrement="false" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="money" type="integer" remarks="Счет денежных средств пользователя"/>
+            <column name="country" type="varchar(255)" remarks="Страна пользователя"/>
+        </createTable>
+
+        <createIndex tableName="profile" indexName="profile_uuid_indx" schemaName="carx">
+            <column name="uuid" type="uuid"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
