@@ -1,5 +1,6 @@
 import com.carx.config.SpringContextConfig;
-import com.carx.controller.GameStatController;
+import com.carx.controller.ActivityController;
+import com.carx.controller.ProfileController;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringContextConfig.class);
-        context.getBean(GameStatController.class);
+        context.getBean(ActivityController.class);
+        context.getBean(ProfileController.class);
     }
 }
