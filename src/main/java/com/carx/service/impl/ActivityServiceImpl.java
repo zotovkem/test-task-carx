@@ -28,7 +28,7 @@ public class ActivityServiceImpl implements ActivityService {
     private final ActivityRepository repository;
 
     @Value("${app.cacheSize:10}")
-    private final Integer countRecordCacheSize;
+    private Integer countRecordCacheSize;
 
     /**
      * Добавляет  в кэш информацию об активности
