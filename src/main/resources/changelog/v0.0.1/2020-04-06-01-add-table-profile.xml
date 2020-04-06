@@ -11,6 +11,7 @@
             </column>
             <column name="money" type="integer" remarks="Счет денежных средств пользователя"/>
             <column name="country" type="varchar(255)" remarks="Страна пользователя"/>
+            <column name="create_date" type="timestamp with time zone" remarks="Дата создания профиля"/>
         </createTable>
 
         <createIndex tableName="profile" indexName="profile_uuid_indx" schemaName="carx">

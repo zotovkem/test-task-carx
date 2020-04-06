@@ -7,8 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.Objects.isNull;
 
 /**
  * @author Created by ZotovES on 06.04.2020
@@ -26,6 +29,9 @@ public class ProfileServiceImpl implements ProfileService {
      */
     @Override
     public void createProfile(@NonNull Profile profile) {
+        if (isNull(profile.getCreateDate())) {
+            profile.setCreateDate(ZonedDateTime.now());
+        }
         repository.save(profile);
     }
 

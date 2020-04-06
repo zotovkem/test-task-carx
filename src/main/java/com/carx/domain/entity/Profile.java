@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 /**
@@ -40,5 +41,10 @@ public class Profile {
     @Column(name = "country")
     private String country;
 
+    /**
+     * Дата создания профиля
+     */
+    @Column(name = "create_date")
+    private ZonedDateTime createDate;
 }
 
