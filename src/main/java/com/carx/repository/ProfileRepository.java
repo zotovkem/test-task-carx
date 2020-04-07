@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -35,4 +36,18 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
             "from Profile p " +
             "where uuid in :uuids")
     Collection<Profile> findAllByUuidIn(@Param("uuids") List<UUID> uuids);
+
+    /**
+     * Получить пользователей зарегистрированных за период
+     *
+     * @param beginDate начальная дата периода
+     * @param endDate   конеяная дата периода
+     * @return список профилей пользователя
+     */
+    @Query(value = "" +
+            "select p " +
+            "from Profile p " +
+            "where createDate between :beginDate and :endDate")
+    Collection<Profile> findAllBetweenCreateDate(@NonNull @Param("beginDate") ZonedDateTime beginDate,
+                                                 @NonNull @Param("endDate") ZonedDateTime endDate);
 }
