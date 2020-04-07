@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 /**
@@ -23,7 +22,7 @@ public class ActivityDto {
     /**
      * Дата активности
      */
-    private ZonedDateTime activityDate;
+    private String activityDate;
 
     /**
      * Значение

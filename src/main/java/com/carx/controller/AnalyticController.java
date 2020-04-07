@@ -145,7 +145,7 @@ public class AnalyticController {
         return activity -> ActivityDto.builder()
                 .uuid(activity.getProfile().getUuid())
                 .activity(activity.getActivity())
-                .activityDate(activity.getActivityDate())
+                .activityDate(activity.getActivityDate().toString())
                 .build();
     }
 

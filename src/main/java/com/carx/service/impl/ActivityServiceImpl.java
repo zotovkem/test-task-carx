@@ -45,7 +45,7 @@ public class ActivityServiceImpl implements ActivityService {
      */
     @Override
     public void addActivity(ActivityDto activityDto) {
-        activityDto.setActivityDate(ZonedDateTime.now());
+        activityDto.setActivityDate(ZonedDateTime.now().toString());
         Long count = jedisClient.lpush(ACTIVITY_REDIS_KEY, mapper.toJson(activityDto));
 
         if (count > countRecordCacheSize) {
@@ -97,7 +97,7 @@ public class ActivityServiceImpl implements ActivityService {
                 .profile(Profile.builder()
                         .uuid(activityDto.getUuid())
                         .build())
-                .activityDate(activityDto.getActivityDate())
+                .activityDate(ZonedDateTime.parse(activityDto.getActivityDate()))
                 .activity(ofNullable(activityDto.getActivity()).orElse(0))
                 .build();
     }
