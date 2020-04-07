@@ -3,8 +3,9 @@ package com.carx.service;
 import com.carx.domain.entity.Profile;
 import org.springframework.lang.NonNull;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,10 +30,19 @@ public interface ProfileService {
     Optional<Profile> findByUUID(@NonNull UUID uuid);
 
     /**
-     * Получить список профилей пользователей по списку идентификаторов
+     * Получить кл-во пользователей по странам зарегистрированных за период
      *
-     * @param uuids список идентификаторов
+     * @param beginDate начальная дата периода
+     * @param endDate   конеяная дата периода
+     * @return список профилей пользователя
+     */
+    Map<String, Integer> countProfilesBetweenCreateDate(@NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate);
+
+    /**
+     * Получить список профилей пользователей самых богатых в стране
+     *
+     * @param limit кол-во богачей в стране
      * @return список профилей
      */
-    Collection<Profile> findAllByUuidIn(List<UUID> uuids);
+    public Collection<Profile> limitProfilesRich(@NonNull Integer limit);
 }

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -56,16 +56,27 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     /**
-     * Получить список профилей пользователей по списку идентификаторов
+     * Получить список профилей пользователей самых богатых в стране
      *
-     * @param uuids список идентификаторов
+     * @param limit кол-во богачей в стране
      * @return список профилей
      */
     @Override
-    public Collection<Profile> findAllByUuidIn(List<UUID> uuids) {
-        return repository.findAllByUuidIn(uuids);
+    public Collection<Profile> limitProfilesRich(@NonNull Integer limit) {
+        return repository.limitProfilesRich(limit);
     }
 
+    /**
+     * Получить кол-во пользователей по странам зарегистрированных за период
+     *
+     * @param beginDate начальная дата периода
+     * @param endDate   конеяная дата периода
+     * @return список профилей пользователя
+     */
+    @Override
+    public Map<String, Integer> countProfilesBetweenCreateDate(@NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate) {
+        return repository.countProfilesBetweenCreateDate(beginDate, endDate);
+    }
 
     /**
      * Обновляет профиль пользователя
