@@ -1,5 +1,6 @@
 package com.carx.service.impl;
 
+import com.carx.domain.dto.CountryCountProjection;
 import com.carx.domain.entity.Profile;
 import com.carx.repository.ProfileRepository;
 import com.carx.service.ProfileService;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -62,6 +63,7 @@ public class ProfileServiceImpl implements ProfileService {
      * @return список профилей
      */
     @Override
+    @Transactional(readOnly = true)
     public Collection<Profile> limitProfilesRich(@NonNull Integer limit) {
         return repository.limitProfilesRich(limit);
     }
@@ -74,7 +76,8 @@ public class ProfileServiceImpl implements ProfileService {
      * @return список профилей пользователя
      */
     @Override
-    public Map<String, Integer> countProfilesBetweenCreateDate(@NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate) {
+    @Transactional(readOnly = true)
+    public List<CountryCountProjection> countProfilesBetweenCreateDate(@NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate) {
         return repository.countProfilesBetweenCreateDate(beginDate, endDate);
     }
 

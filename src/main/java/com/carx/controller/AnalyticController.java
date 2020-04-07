@@ -1,6 +1,7 @@
 package com.carx.controller;
 
 import com.carx.domain.dto.ActivityDto;
+import com.carx.domain.dto.CountryCountDto;
 import com.carx.domain.dto.ProfileDto;
 import com.carx.domain.entity.Activity;
 import com.carx.domain.entity.Profile;
@@ -16,7 +17,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -59,7 +59,10 @@ public class AnalyticController {
             var endDate = getEndDate(req);
             validateBetween(beginDate, endDate);
 
-            return mapper.toJson(profileService.countProfilesBetweenCreateDate(beginDate, endDate), Map.class);
+            return profileService.countProfilesBetweenCreateDate(beginDate, endDate).stream()
+                    .map(p -> new CountryCountDto(p.getCountry(), p.getCount()))
+                    .map(p -> mapper.toJson(p, CountryCountDto.class))
+                    .collect(toList());
         });
     }
 

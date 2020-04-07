@@ -1,11 +1,12 @@
 package com.carx.service;
 
+import com.carx.domain.dto.CountryCountProjection;
 import com.carx.domain.entity.Profile;
 import org.springframework.lang.NonNull;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public interface ProfileService {
      * @param endDate   конеяная дата периода
      * @return список профилей пользователя
      */
-    Map<String, Integer> countProfilesBetweenCreateDate(@NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate);
+    List<CountryCountProjection> countProfilesBetweenCreateDate(@NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate);
 
     /**
      * Получить список профилей пользователей самых богатых в стране

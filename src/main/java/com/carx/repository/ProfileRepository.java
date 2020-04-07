@@ -1,5 +1,6 @@
 package com.carx.repository;
 
+import com.carx.domain.dto.CountryCountProjection;
 import com.carx.domain.entity.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -7,7 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author Created by ZotovES on 06.04.2020
@@ -42,12 +46,12 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
      * @return список профилей пользователя
      */
     @Query(nativeQuery = true, value = "" +
-            "select  p.country, count(p.uuid)" +
+            "select p.country as country, count(p.uuid) as count " +
             "from carx.profile p " +
             "where p.create_date between :beginDate and :endDate " +
             "group by p.country")
-    Map<String, Integer> countProfilesBetweenCreateDate(@NonNull @Param("beginDate") ZonedDateTime beginDate,
-                                                        @NonNull @Param("endDate") ZonedDateTime endDate);
+    List<CountryCountProjection> countProfilesBetweenCreateDate(@NonNull @Param("beginDate") ZonedDateTime beginDate,
+                                                                @NonNull @Param("endDate") ZonedDateTime endDate);
 
     @Query(nativeQuery = true, value = "" +
             "select * " +

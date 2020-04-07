@@ -62,6 +62,7 @@ public class ActivityServiceImpl implements ActivityService {
      * @return список активностей
      */
     @Override
+    @Transactional(readOnly = true)
     public Collection<Activity> findActivityByUuidAndActivityDateBetween(@NonNull UUID uuid, @NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate) {
         return repository.findActivityByUuidAndActivityDateBetween(uuid, beginDate, endDate);
     }
