@@ -22,6 +22,7 @@
         <lombok.version>1.18.12</lombok.version>
         <junit-jupiter-engine.version>5.6.0</junit-jupiter-engine.version>
         <slf4j-simple.version>1.7.21</slf4j-simple.version>
+        <logback-classic.version>1.2.3</logback-classic.version>
     </properties>
 
     <dependencies>
@@ -61,11 +62,6 @@
             <version>${spring-boot-starter-data-jpa.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>${hibernate-annotations.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase-core.version}</version>
@@ -86,6 +82,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j-simple.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
         </dependency>
     </dependencies>
 

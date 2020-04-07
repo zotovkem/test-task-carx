@@ -7,4 +7,6 @@
 
     <include file="2020-04-06-01-add-table-profile.xml" relativeToChangelogFile="true"/>
     <include file="2020-04-06-02-add-table-activity.xml" relativeToChangelogFile="true"/>
+    <include file="2020-04-07-01-add-indx-activity-date.xml" relativeToChangelogFile="true"/>
+    <include file="2020-04-07-02-add-indx-profile-create-date.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
