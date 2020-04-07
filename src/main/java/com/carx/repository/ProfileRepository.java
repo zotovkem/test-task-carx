@@ -7,10 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
 import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Created by ZotovES on 06.04.2020
@@ -38,16 +35,25 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     Collection<Profile> findAllByUuidIn(@Param("uuids") List<UUID> uuids);
 
     /**
-     * Получить пользователей зарегистрированных за период
+     * Получить кол-во пользователей по странам зарегистрированных за период
      *
      * @param beginDate начальная дата периода
      * @param endDate   конеяная дата периода
      * @return список профилей пользователя
      */
-    @Query(value = "" +
-            "select p " +
-            "from Profile p " +
-            "where createDate between :beginDate and :endDate")
-    Collection<Profile> findAllBetweenCreateDate(@NonNull @Param("beginDate") ZonedDateTime beginDate,
-                                                 @NonNull @Param("endDate") ZonedDateTime endDate);
+    @Query(nativeQuery = true, value = "" +
+            "select  p.country, count(p.uuid)" +
+            "from carx.profile p " +
+            "where p.create_date between :beginDate and :endDate " +
+            "group by p.country")
+    Map<String, Integer> countProfilesBetweenCreateDate(@NonNull @Param("beginDate") ZonedDateTime beginDate,
+                                                        @NonNull @Param("endDate") ZonedDateTime endDate);
+
+    @Query(nativeQuery = true, value = "" +
+            "select * " +
+            "from ( " +
+            "select p.*, row_number() over (partition by country order by money desc) as r " +
+            "from carx.profile p) p " +
+            "where p.r <= :limit")
+    Collection<Profile> limitProfilesRich(@NonNull @Param("limit") Integer limit);
 }

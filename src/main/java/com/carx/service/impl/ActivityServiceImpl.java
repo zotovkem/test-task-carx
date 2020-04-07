@@ -5,17 +5,19 @@ import com.carx.domain.entity.Activity;
 import com.carx.domain.entity.Profile;
 import com.carx.repository.ActivityRepository;
 import com.carx.service.ActivityService;
-import com.carx.service.ProfileService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
@@ -28,10 +30,10 @@ import static java.util.Optional.ofNullable;
 @Service
 @RequiredArgsConstructor
 public class ActivityServiceImpl implements ActivityService {
+    private static final String ACTIVITY_REDIS_KEY = "ACTIVITY";
     private final Jedis jedisClient;
     private final Gson mapper;
     private final ActivityRepository repository;
-    private final ProfileService profileService;
 
     @Value("${app.cacheSize:10}")
     private Integer countRecordCacheSize;
@@ -44,11 +46,24 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public void addActivity(ActivityDto activityDto) {
         activityDto.setActivityDate(ZonedDateTime.now());
-        Long count = jedisClient.lpush("ACTIVITY", mapper.toJson(activityDto));
+        Long count = jedisClient.lpush(ACTIVITY_REDIS_KEY, mapper.toJson(activityDto));
 
         if (count > countRecordCacheSize) {
             new Thread(saveBatch()).start();
         }
+    }
+
+    /**
+     * Поиск активностей по идентификатору пользователя за период
+     *
+     * @param uuid      идентификатор пользователя
+     * @param beginDate начальная дата диапазона
+     * @param endDate   конечная дата диапазона
+     * @return список активностей
+     */
+    @Override
+    public Collection<Activity> findActivityByUuidAndActivityDateBetween(@NonNull UUID uuid, @NonNull ZonedDateTime beginDate, @NonNull ZonedDateTime endDate) {
+        return repository.findActivityByUuidAndActivityDateBetween(uuid, beginDate, endDate);
     }
 
     /**
@@ -60,7 +75,7 @@ public class ActivityServiceImpl implements ActivityService {
             public void run() {
                 var activityList = new ArrayList<Activity>();
                 for (int i = 0; i < countRecordCacheSize; i++) {
-                    Optional.of(jedisClient.rpop("ACTIVITY"))
+                    Optional.of(jedisClient.rpop(ACTIVITY_REDIS_KEY))
                             .map(json -> mapper.fromJson(json, ActivityDto.class))
                             .filter(a -> nonNull(a.getUuid()))
                             .map(mappingToEntity())
