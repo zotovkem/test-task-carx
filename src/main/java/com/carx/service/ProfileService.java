@@ -3,6 +3,8 @@ package com.carx.service;
 import com.carx.domain.entity.Profile;
 import org.springframework.lang.NonNull;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,7 +18,7 @@ public interface ProfileService {
      *
      * @param profile профиль пользователя
      */
-    void createProfile(@NonNull Profile profile);
+    Profile createOrUpdateProfile(@NonNull Profile profile);
 
     /**
      * Получить профиль по уникальному идентификатору
@@ -25,4 +27,12 @@ public interface ProfileService {
      * @return профиль пользователь
      */
     Optional<Profile> findByUUID(@NonNull UUID uuid);
+
+    /**
+     * Получить список профилей пользователей по списку идентификаторов
+     *
+     * @param uuids список идентификаторов
+     * @return список профилей
+     */
+    Collection<Profile> findAllByUuidIn(List<UUID> uuids);
 }

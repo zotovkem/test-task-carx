@@ -6,10 +6,14 @@ import com.carx.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static java.util.Objects.isNull;
 
@@ -28,11 +32,15 @@ public class ProfileServiceImpl implements ProfileService {
      * @param profile профиль пользователя
      */
     @Override
-    public void createProfile(@NonNull Profile profile) {
+    @Transactional(rollbackFor = Exception.class)
+    public Profile createOrUpdateProfile(@NonNull Profile profile) {
         if (isNull(profile.getCreateDate())) {
             profile.setCreateDate(ZonedDateTime.now());
         }
-        repository.save(profile);
+        return findByUUID(profile.getUuid())
+                .map(updateProfileMoney(profile))
+                .map(repository::save)
+                .orElseGet(() -> repository.save(profile));
     }
 
     /**
@@ -42,7 +50,32 @@ public class ProfileServiceImpl implements ProfileService {
      * @return профиль пользователь
      */
     @Override
+    @Transactional(readOnly = true)
     public Optional<Profile> findByUUID(@NonNull UUID uuid) {
         return repository.findByUuid(uuid);
+    }
+
+    /**
+     * Получить список профилей пользователей по списку идентификаторов
+     *
+     * @param uuids список идентификаторов
+     * @return список профилей
+     */
+    @Override
+    public Collection<Profile> findAllByUuidIn(List<UUID> uuids) {
+        return repository.findAllByUuidIn(uuids);
+    }
+
+
+    /**
+     * Обновляет профиль пользователя
+     *
+     * @param profile профиль пользователя
+     */
+    private Function<Profile, Profile> updateProfileMoney(@NonNull Profile profile) {
+        return p -> {
+            p.setMoney(profile.getMoney());
+            return p;
+        };
     }
 }
