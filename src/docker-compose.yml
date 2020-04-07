@@ -1,0 +1,39 @@
+version: "0.1"
+
+services:
+  carx_app:
+    container_name: carx-app
+    image: carx-app:latest
+    command: java -jar web-fat.jar
+    ports:
+      - "4567:4567"
+
+  redis_carx:
+    container_name: carx_redis
+    image: carx_redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    restart: always
+
+  postgres_local:
+    container_name: carx_postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=carx
+      - POSTGRES_PASSWORD=carx
+      - POSTGRES_DB=carx
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pg_data_volume:/var/lib/postgresql/data/pgdata
+
+volumes:
+  pg_data_volume:
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.bridge.name: "dockernet"
