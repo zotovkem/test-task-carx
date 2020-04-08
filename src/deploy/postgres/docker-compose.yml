@@ -1,0 +1,15 @@
+version: "3"
+services:
+  postgres:
+    build: .
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=carx
+      - POSTGRES_PASSWORD=carx
+      - POSTGRES_DB=carx
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pg_data_volume:/var/lib/postgresql/data/pgdata
+volumes:
+  pg_data_volume:

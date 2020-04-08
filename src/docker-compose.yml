@@ -1,24 +1,26 @@
-version: "0.1"
+version: "3.5"
 
 services:
   carx_app:
     container_name: carx-app
     image: carx-app:latest
-    command: java -jar web-fat.jar
+    build: deploy/app
+    command: java -jar carx.jar
     ports:
       - "4567:4567"
 
   redis_carx:
     container_name: carx_redis
-    image: carx_redis:latest
+    image: redis:latest
     ports:
       - "6379:6379"
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     restart: always
 
-  postgres_local:
+  postgres_carx:
     container_name: carx_postgres
+    build: deploy/postgres
     restart: always
     ports:
       - 5432:5432
@@ -36,4 +38,4 @@ volumes:
 networks:
   default:
     driver_opts:
-      com.docker.network.bridge.name: "dockernet"
+      com.docker.network.bridge.name: "carxdockernet"
